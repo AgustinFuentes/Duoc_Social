@@ -1,0 +1,20 @@
+{% extends 'social/layout.html' %}
+
+{% block content %}
+  <h2 style="text-align: center;">Lista de Conversaciones</h2>
+  {% if conversations %}
+    <ul>
+      {% for conversation in conversations %}
+        <li>
+          Conversación con:
+          {% for participant in conversation.participants.all %}
+            {{ participant.username }}{% if not participant.is_last %}, {% endif %}
+          {% endfor %}
+          - <a href="{% url 'conversation' conversation_id=conversation.pk %}">Ir a la conversación</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tienes conversaciones disponibles.</p>
+  {% endif %}
+{% endblock %}

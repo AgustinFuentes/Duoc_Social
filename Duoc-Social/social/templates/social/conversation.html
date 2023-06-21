@@ -1,0 +1,22 @@
+{% extends 'social/layout.html' %}
+
+{% block messages %}
+{% endblock messages %}
+
+{% block content %}
+  <h2 class="chat">Chat</h2>
+  
+  <div class="chat">
+  <ul class="chat">
+    {% for message in messages %}
+    <li>{{ message.sender.username }} : {{ message.content }}</li>
+    {% endfor %}
+  </ul>
+  <h3 class="chat">Enviar mensaje:</h3>
+  <form method="post" action="{% url 'send_message' conversation.id %}">
+    {% csrf_token %}
+    <textarea name="message" rows="4" cols="50"></textarea>
+    <br>
+    <button class="chat" type="submit" >Enviar</button>
+  </form></div>
+{% endblock %}

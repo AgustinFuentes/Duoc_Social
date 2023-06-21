@@ -1,0 +1,53 @@
+{% extends 'social/layout.html' %}
+{% load humanize %}
+{% block content %}
+
+{% for post in posts %}
+<article>
+    <div class="container-article">
+        <img src="{{ post.user.profile.image.url }}">
+        <div>
+            <h2 class="username"><a href="{% url 'profile' post.user.username %}">@{{ post.user.username }}</a></h2>
+            <i class="clock"></i>
+            <time data-time="#">{{ post.timestamp|naturaltime }}</time>
+            <div class="post">{{ post.content }}</div>
+            {% if request.user.is_authenticated %}
+            <form method="post" action="{% url 'add_comment' post.id %}">
+                {% csrf_token %}
+                <textarea name="comment" placeholder="Escribe un comentario"></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+            {% endif %}
+        </div>
+    {% if request.user.is_authenticated %}
+    <!-- Limitar a un voto por usuario, usuarios no loguados no pueden ver el boton -->
+    <form method="post" action="{% url 'vote_post' post.id %}">
+        {% csrf_token %}
+        <button type="submit">Votar</button>
+        <div class="votes">{{ post.votes }} voto(s)</div>
+    </form>
+    {% else %}
+        <div class="votes">{{ post.votes }} voto(s)</div>
+    {% endif %}
+    </div>
+    <hr>
+    {% for comment in post.comments.all %}
+        <div class="container-article">
+            <img src="{{ comment.user.profile.image.url }}">
+            <div>
+                <h2 class="username">@{{ comment.user }}</a></h2>
+                <i class="clock"></i>
+                <time data-time="#">{{ comment.timestamp|naturaltime }}</time>
+                <div class="comment">{{ comment.content }}</div>
+            </div>
+            <a href="">Comments: {{ post.comments.count }}</a>
+        </div>
+        {% empty %}
+        <p>Aun no hay comentarios!</p>
+{% endfor %}
+    
+</article>
+
+{% endfor %}
+
+{% endblock %}

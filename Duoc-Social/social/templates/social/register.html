@@ -1,0 +1,33 @@
+{% extends 'social/layout.html' %}
+{% block content %}
+
+<form class="form" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+    <div class="checkbox-wrapper">
+      <div class="label-input-wrapper">
+        <label for="acepto">Acepto los <a href="{% url 'terms' %}"><strong>términos y condiciones</strong></a>:</label>
+        <input type="checkbox" id="acepto" name="acepto" required>
+      </div>
+    </div>
+    <br>
+    <button type="submit" id="submit">Registrarse</button>
+</form>
+
+<style>
+  .checkbox-wrapper {
+    display: justify;
+    align-items: center;
+  }
+
+  .label-input-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .label-input-wrapper label {
+    margin-right: 10px;
+  }
+</style>
+
+{% endblock %}
